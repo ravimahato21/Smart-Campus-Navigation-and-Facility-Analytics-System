@@ -1,0 +1,13 @@
+/campus
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dSYM/
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store

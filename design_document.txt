@@ -1,0 +1,98 @@
+Smart Campus Project - Milestone 1 Design
+
+MAIN CLASSES
+CampusApp
+Loads the four data files, shows the menu, and calls the other classes.
+It also prints messages when a record is not valid.
+
+FacilityDatabase
+Keeps the accepted facilities in the same order as the file.
+Uses HashTable to find a facility by its ID.
+
+HashTable
+Finds facilities by ID and checks for repeated IDs.
+
+CampusGraph
+Keeps the buildings and their connections. Uses BFS to find
+which buildings can be reached from a starting building.
+
+DepartmentTree
+Keeps the department names in a tree. Each department can have
+many child departments. It can add, find, and display departments.
+
+Utils
+Has small helper functions for spaces, text comparisons, and input.
+
+HASH TABLE
+The hash table starts with 17 buckets (INITIAL_CAPACITY).
+Each bucket can hold more than one facility ID.
+
+How the hash function works:
+1. Remove spaces at the start and end of the ID.
+2. Change letters to uppercase.
+3. Start with h = 0.
+4. For each character c in the ID, calculate:
+   h = (31 * h + ASCII value of c) % 17
+5. Use h as the bucket number.
+
+The program uses its own hash function, not std::hash.
+It does not use map or unordered_map.
+
+Handling collisions:
+Two different IDs may get the same bucket number. When this
+happens, the program keeps both IDs in that bucket. This is
+called separate chaining. We chose it because the bucket can grow
+when more IDs are added, so there is no fixed limit on facilities.
+The table does not need to resize for this project.
+
+Counting collisions:
+One collision is counted when a new, accepted ID goes into a bucket
+that already has an entry. A repeated ID is rejected and does not
+increase the collision count. The program shows the bucket count,
+number of accepted entries, and number of collisions after loading
+facilities.txt. See testdata/collision and test_results.txt for a test.
+
+CAMPUS GRAPH
+The graph uses an adjacency list. Each building has a list of its
+connected buildings. This uses less space than a large table when
+there are only a few connections. It also keeps neighbors in the
+order they were read from the file.
+
+A connection works both ways. For example, if Library is connected
+to Gym, Gym is also connected to Library. That connection is counted
+only once.
+
+BFS (Breadth-First Search) uses a queue. It starts at the building
+the user enters, then visits nearby buildings in order. It marks a
+building as visited as soon as the building is added to the queue.
+The distance shows the number of connections from the start.
+
+DEPARTMENT TREE
+The first department is the root. All other departments must have
+a parent that has already been added. Each department can have any
+number of children. Names are checked without caring about uppercase
+or lowercase letters.
+
+If the tree is empty, adding a department makes it the root.
+The program does not ask for a parent in this case.
+
+Preorder means showing a department first, then showing its child
+departments in the order they were added. The tree also keeps parent
+links so it can show how deep a department is in the tree.
+The DepartmentTree destructor frees the memory used by its nodes.
+
+READING FILES AND HANDLING ERRORS
+The program reads files in this order:
+1. buildings.txt
+2. connections.txt
+3. facilities.txt
+4. departments.txt
+
+The program skips empty lines and comment lines. It removes spaces
+around fields but keeps spaces inside names. It checks records and
+prints the file name, line number, and problem when one is invalid.
+It keeps reading after a bad line. If a file is missing, the program
+prints an error instead of crashing.
+
+The menu reads a whole line at a time. This lets users type names
+with spaces and prevents invalid menu input from breaking the program.

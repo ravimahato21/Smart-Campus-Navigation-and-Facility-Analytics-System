@@ -1,0 +1,132 @@
+Smart Campus - Milestone 1 test results
+
+Test computer: Linux, g++ 14.2.0, C++11. These tests were NOT run on UNT CELL.
+Build: g++ -std=c++11 -Wall -Wextra -pedantic -Iinclude src/*.cpp -o campus
+Run: ./campus <data folder>, then enter the menu choices listed below.
+Each test was run automatically. The actual results came from the program output.
+
+Test 1: Sample load counts
+Data folder: data
+What was entered: 10
+Expected: buildings.txt: 7 accepted, 0 rejected; connections.txt: 6 accepted, 0 rejected; facilities.txt: 10 accepted, 0 rejected; departments.txt: 7 accepted, 0 rejected
+Actual: found: buildings.txt: 7 accepted, 0 rejected; found: connections.txt: 6 accepted, 0 rejected; found: facilities.txt: 10 accepted, 0 rejected; found: departments.txt: 7 accepted, 0 rejected
+Result: PASS
+
+Test 2: Display facilities in file order
+Data folder: data
+What was entered: 1 / 10
+Expected: F001 | Main Reading Room | Library | Library; F010 | Research Help Desk | Library | Library; Total facilities: 10
+Actual: found: F001 | Main Reading Room | Library | Library; found: F010 | Research Help Desk | Library | Library; found: Total facilities: 10
+Result: PASS
+
+Test 3: Uppercase and lowercase ID search
+Data folder: data
+What was entered: 2 / F004 / 2 / f004 / 10
+Expected: Found: F004 | Computer Lab A | Science Building | Computer Lab
+Actual: found: Found: F004 | Computer Lab A | Science Building | Computer Lab
+Result: PASS
+
+Test 4: Invalid and missing ID search
+Data folder: data
+What was entered: 2 / 004 / 2 / F999 / 10
+Expected: Invalid ID format: use F plus exactly three digits.; Facility F999 not found.
+Actual: found: Invalid ID format: use F plus exactly three digits.; found: Facility F999 not found.
+Result: PASS
+
+Test 5: Graph orders, isolated building, degree totals
+Data folder: data
+What was entered: 3 / 4 / 10
+Expected: Library: Student Union, Business Building; Observatory: (no connections); Total buildings: 7; Total connections: 6; Student Union - degree: 3
+Actual: found: Library: Student Union, Business Building; found: Observatory: (no connections); found: Total buildings: 7; found: Total connections: 6; found: Student Union - degree: 3
+Result: PASS
+
+Test 6: BFS visited order, distances and count
+Data folder: data
+What was entered: 5 / Library / 10
+Expected: Library (distance 0); Student Union (distance 1); Business Building (distance 1); Science Building (distance 2); Gym (distance 2); Engineering Building (distance 3); Reachable: 6 of 7 buildings
+Actual: found: Library (distance 0); found: Student Union (distance 1); found: Business Building (distance 1); found: Science Building (distance 2); found: Gym (distance 2); found: Engineering Building (distance 3); found: Reachable: 6 of 7 buildings
+Result: PASS
+
+Test 7: BFS isolated and unknown start
+Data folder: data
+What was entered: 5 / Observatory / 5 / Unknown Center / 10
+Expected: Observatory (distance 0); Reachable: 1 of 7 buildings; Unknown building: Unknown Center
+Actual: found: Observatory (distance 0); found: Reachable: 1 of 7 buildings; found: Unknown building: Unknown Center
+Result: PASS
+
+Test 8: Tree search root, child, missing; indentation and preorder
+Data folder: data
+What was entered: 7 / University / 7 / Computer Science / 7 / Missing / 8 / 9 / 10
+Expected: Parent: None; Direct children: 2; Depth: 2; Department not found: Missing;     College of Engineering;         Computer Science; University -> College of Engineering -> Computer Science -> Electrical Engineering -> College of Science -> Mathematics -> Physics
+Actual: found: Parent: None; found: Direct children: 2; found: Depth: 2; found: Department not found: Missing; found:     College of Engineering; found:         Computer Science; found: University -> College of Engineering -> Computer Science -> Electrical Engineering -> College of Science -> Mathematics -> Physics
+Result: PASS
+
+Test 9: Adding a valid child and rejecting duplicate and missing parent
+Data folder: data
+What was entered: 6 / New Department / College of Science / 6 / new department / University / 6 / Lost / Missing / 7 / New Department / 10
+Expected: Added department: New Department; duplicate department: new department; unknown parent: Missing; Depth: 2
+Actual: found: Added department: New Department; found: duplicate department: new department; found: unknown parent: Missing; found: Depth: 2
+Result: PASS
+
+Test 10: Recover from non-numeric, blank and out-of-range menu text
+Data folder: data
+What was entered: abc /  / 15 / 3.1 / 5 /  / 2 /  / 1 / 10
+Expected: Invalid menu choice. Enter a number from 1 to 10.; Error: name cannot be blank.; Total facilities: 10
+Actual: found: Invalid menu choice. Enter a number from 1 to 10.; found: Error: name cannot be blank.; found: Total facilities: 10
+Result: PASS
+
+Test 11: Collision, normalized lowercase and duplicate not counted
+Data folder: testdata/collision
+What was entered: 2 / f013 / 10
+Expected: facilities.txt: 2 accepted, 1 rejected (hash capacity 17, entries 2, collisions 1); duplicate facility ID: F000; Found: F013 | Second Lab | Gym | Fitness
+Actual: found: facilities.txt: 2 accepted, 1 rejected (hash capacity 17, entries 2, collisions 1); found: duplicate facility ID: F000; found: Found: F013 | Second Lab | Gym | Fitness
+Result: PASS
+
+Test 12: Malformed fields, windows CRLF, case duplicates and unknown refs
+Data folder: testdata/invalid
+What was entered: 1 / 3 / 7 / math / 10
+Expected: buildings.txt: 3 accepted, 2 rejected; connections.txt: 2 accepted, 4 rejected; facilities.txt: 2 accepted, 4 rejected; departments.txt: 3 accepted, 3 rejected; Warning: buildings.txt, line 3: duplicate building; unknown building: Missing; duplicate connection; self-connection; invalid ID; Room #5; Department: Math
+Actual: found: buildings.txt: 3 accepted, 2 rejected; found: connections.txt: 2 accepted, 4 rejected; found: facilities.txt: 2 accepted, 4 rejected; found: departments.txt: 3 accepted, 3 rejected; found: Warning: buildings.txt, line 3: duplicate building; found: unknown building: Missing; found: duplicate connection; found: self-connection; found: invalid ID; found: Room #5; found: Department: Math
+Result: PASS
+
+Test 13: Empty files and root insertion without parent question
+Data folder: testdata/emptytree
+What was entered: 1 / 3 / 4 / 5 / Library / 7 / University / 8 / 9 / 6 / University / 7 / University / 8 / 9 / 10
+Expected: Total facilities: 0; No buildings are loaded.; Unknown building: Library; No departments are loaded.; Added department: University; Parent: None; Direct children: 0; Depth: 0
+Actual: found: Total facilities: 0; found: No buildings are loaded.; found: Unknown building: Library; found: No departments are loaded.; found: Added department: University; found: Parent: None; found: Direct children: 0; found: Depth: 0
+Result: PASS
+
+Test 14: Missing files recover and report zero accepted
+Data folder: testdata/missing
+What was entered: 1 / 3 / 8 / 10
+Expected: Error: unable to open testdata/missing/connections.txt; Error: unable to open testdata/missing/facilities.txt; Error: unable to open testdata/missing/departments.txt; connections.txt: 0 accepted, 0 rejected; facilities.txt: 0 accepted, 0 rejected; departments.txt: 0 accepted, 0 rejected
+Actual: found: Error: unable to open testdata/missing/connections.txt; found: Error: unable to open testdata/missing/facilities.txt; found: Error: unable to open testdata/missing/departments.txt; found: connections.txt: 0 accepted, 0 rejected; found: facilities.txt: 0 accepted, 0 rejected; found: departments.txt: 0 accepted, 0 rejected
+Result: PASS
+
+Test 15: Case-insensitive building and parent name inputs with spaces
+Data folder: data
+What was entered: 5 /   liBRary  / 6 / Data Science /   COLLEGE OF SCIENCE  / 7 /   data science  / 10
+Expected: Reachable: 6 of 7 buildings; Added department: Data Science; Department: Data Science; Parent: College of Science
+Actual: found: Reachable: 6 of 7 buildings; found: Added department: Data Science; found: Department: Data Science; found: Parent: College of Science
+Result: PASS
+
+Test 16: Continue operations after errors and exit with 0
+Data folder: data
+What was entered: 2 / F0000 / 5 / Nonexistent / 6 / New School /  / 1 / 0
+Expected: Invalid ID format; Unknown building: Nonexistent; Error: name cannot be blank.; Total facilities: 10; Exiting campus program.
+Actual: found: Invalid ID format; found: Unknown building: Nonexistent; found: Error: name cannot be blank.; found: Total facilities: 10; found: Exiting campus program.
+Result: PASS
+
+Test 17: Root-only department hierarchy and preorder
+Data folder: testdata/emptytree
+What was entered: 6 / University / 7 / university / 8 / 9 / 10
+Expected: Added department: University; Department: University; Depth: 0; Parent: None
+Actual: found: Added department: University; found: Department: University; found: Depth: 0; found: Parent: None
+Result: PASS
+
+Test 18: Missing department parent on first line, without crashing
+Data folder: testdata/invalid
+What was entered: 8 / 10
+Expected: University;     engineering;         Math
+Actual: found: University; found:     engineering; found:         Math
+Result: PASS
