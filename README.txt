@@ -53,7 +53,7 @@ testdata/missing/     Files for testing missing files
 README.txt            This file
 design_document.txt   How the program is built
 test_results.txt      Tests and their results
-CONTRIBUTIONS.txt     Work done by each team member
+CONTRIBUTIONS.md      Work done by each team member
 Makefile              Another way to build the program
 .gitignore            Keeps built files out of Git
 
